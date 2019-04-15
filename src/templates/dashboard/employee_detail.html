@@ -1,0 +1,560 @@
+
+{% extends '_layout.html' %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% load humanize %}
+
+ {% block navheader %}
+ 	{% include 'includes/navheader_employee_app.html' %}
+ {% endblock %}
+
+
+ 
+  {% block stylesheet %}
+  	.rounded-circle-image{
+  	border-radius: 50% !important;
+  	width:250px;
+  	height:250px;
+  }
+
+  .profile-wrapper{
+  background:#fff;
+  -webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+
+  padding-top: 10px;
+
+}
+
+
+.list-group {
+	margin-top: 10px;
+}
+
+span{
+	color: #c7c7c7;
+  font-weight: lighter;
+  font-size: 14px;
+}
+
+
+.list-group-item {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    margin-bottom: -1px;
+    background-color: #fff;
+    border: 1px solid transparent;
+    font-size:17px;
+}
+
+  #override-start{
+    background:none !important;
+    top: 35% !important;
+    right:13px;
+    color:#000;
+    font-size: 24px;
+
+    }
+
+    .alert-warning{
+        background:#fd7b7b;
+    }
+
+    .alert-success {
+        background-color: #82b72a;
+    }
+
+    .alert-success,.alert-warning{
+        font-size:16px;
+    }
+
+    .employee-name-title{
+    color: #3873b1;
+    font-weight: 600;
+    font-variant: petite-caps;
+    font-size: 3.1rem !important;
+  }
+
+  span,.list-group-item > div{
+  font-variant: petite-caps;
+}
+
+
+.panel-default>.panel-heading {
+    color: #fff !important;
+    background-color: #2d88a9 !important;
+}
+
+.panel-title a:hover{
+  color:#e6e4e4;
+}
+
+.panel-title a:active{
+  color:#e6e4e4;
+}
+
+.panel-title a:focus{
+  color:#e6e4e4;
+}
+
+
+
+
+
+{% endblock %}<!-- STYLESHEETS -->
+
+
+
+
+        <!--CONTENTS-->
+ {% block content %}
+        <section class="content">
+            <section class="container-fluid">
+              <section class="row">
+                <section class="col col-lg-12">
+                  <span><a href="{{request.META.HTTP_REFERER|escape}}" style="color:#565656;">Back</a></span>
+                </section>
+              </section>
+                      <section class="row">
+                        <section class="col col-lg-12 col-md-12  col-sm-12">
+                            {% if  messages %}
+                                    {% for message in messages %}
+                                     <div {% if message.tags %} class="{{ message.tags}}"{% endif %}>
+                                         {{ message }}
+                                         <button type="button" class="close" id = "override-start"data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
+                                         </button>
+                                     </div>
+                                    {% endfor %}
+                            {% endif %}
+
+                        </section>
+                    </section>
+            		<section class="row">
+            			<section class="text-center">
+            				<h3><span class="employee-name-title">{{ employee.get_full_name}}</span></h3>
+            			</section>
+            		</section>
+
+                	<section class="row">
+                	<section class="col col-lg-4 col-md-4 col-sm-12 profile-wrapper">
+                    {% if employee.image %}
+      						  <img src="{{ employee.image.url}}" class="img-fluid rounded-circle-image" >
+                    {% else %}
+                    <img src="/media/default.png" class="img-fluid rounded-circle-image" />
+                    {% endif %}
+        						  <section class="text-centered" style="margin-top: 3px;">
+        						    
+            							<ul class="list-group">
+              					  		<li class="list-group-item"><span>Fullname</span> <div>{{ employee.get_full_name }}</div></li>
+              					  		<li class="list-group-item"><span>Nationality</span><div> {{ employee.nationality}}</div></li>
+                              {% if employee.email %}
+                              <li class="list-group-item"><span>Email</span> <div>{{ employee.email}}</div></li>
+                              {% endif %}
+                              <li class="list-group-item"><span>Department</span> <div>{{ employee.department}}</div></li>
+                              <li class="list-group-item"><span>Employee Type</span> <div>{{ employee.employeetype}}</div></li>
+                              <li class="list-group-item"><span>Role</span> <div>{{ employee.role}}</div></li>
+              					  		<li class="list-group-item"><span>Date of Birth</span> <div>{{ employee.birthday}}</div></li>
+                              <li class="list-group-item"><span>Age </span><div>{{ employee.get_age }}</div></li>
+
+              					  		{% if employee.is_blocked %}
+              					  		<li class="list-group-item"><span>Status</span> <div>Inactive</div></li>
+              					  		{% else %}
+              					  		<li class="list-group-item"><span>Status</span><div> active</div></li>
+              					  		{% endif %}
+                              <div>
+                                <span style="font-style: italic;">updated - {{employee.updated|naturaltime}}</span>
+                              </div>
+                              
+            							</ul>
+        						  </section>
+						        </section><!-- /profile-wrappper -->
+              			<section class="col col-lg-8" >
+                            <!-- ACCORDIAN - COLLAPSIBLE -->
+                            <!-- 1 Personal Detail -->
+                            <!-- 2 -- Family -->
+                            <!-- 3--  Emergency -->
+                            <!-- 4 -- Bank Account -->
+                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+                        <!-- PERSONAL INFORMATION -->
+                        <div class="panel panel-default">
+                          <div class="panel-heading" role="tab" id="headingOne">
+                            <h4 class="panel-title">
+                              <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                PERSONAL INFORMATIONS 
+                              </a>
+                            </h4>
+                          </div>
+                          <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                            <div class="panel-body">
+                              <div class="container-fluid">
+                                <div class="row">
+                                  <div class="col col-lg-6">
+                                       
+                                        {% if employee %}
+                                          
+                                          <div class="list-group" id="list-tab" role="tablist">
+                                            <a class="list-group-item list-group-item-action" id="list-home-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Salutation</span> <div>{{ employee.title }}</div>
+                                            </a>
+
+                                            {% if employee.firstname %}
+                                            <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Firstname</span> <div> {{ employee.firstname}} </div>
+                                            </a>
+                                            {% endif %}
+
+                                            {% if employee.lastname %}
+                                            <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Lastname</span> <div> {{ employee.lastname }} </div>
+                                            </a>
+                                            {% endif %}
+
+                                            {% if employee.othername %}
+                                            <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Othername</span> <div>{{ employee.othername}} </div>
+                                            </a>
+                                            {% endif %}
+
+                                            {% if employee.sex %}
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Gender</span> <div> {{ employee.sex }}
+                                            </div>
+                                            </a>
+                                            {% endif %}
+
+                                            <!-- recent added 29/03/19 -->
+                                            {% if employee.email %}
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Email </span><div>{{ employee.email }} </div>
+                                            </a>
+                                            {% endif %}
+                                         
+
+
+                                            {% if employee.tel %}
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Contact</span> <div> {{ employee.tel  }}</div></a>
+                                            {% endif %}
+
+                                            {% if employee.tel %}
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Bio</span> <div> {{ employee.bio }} </div></a>
+                                            {% endif %}
+
+
+                                            {% if employee.birthday %}
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Date of Birth</span><div>{{ employee.birthday}}</div></a>
+                                            {% endif %}
+
+                                            {% if employee.tinnumber %}
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span>TIN</span> <div>{{ employee.tinnumber }}</div></a>
+                                            {% endif %}
+
+                                            {% if employee.employeeid %}
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Employee ID</span> <div>{{ employee.employeeid }}</div></a>
+                                            {% endif %}
+
+                                            {% if employee.dateissued %}
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Date Issued(Employee ID)</span> <div>{{ employee.dateissued }}</div></a>
+                                            {% endif %}
+
+                                            {% if request.user.is_superuser %}
+                                            <div>
+                                              <span><a href="{% url 'dashboard:edit' employee.id %}">Edit</a></span>
+                                            </div>
+
+                                            {% endif %}
+
+                                          </div>
+
+                                        {% else %}
+
+                                        <h4>No Information found,to add click <a href="{% url 'dashboard:familycreate' %}">here</a></h4>
+
+                                        {% endif %}
+                                  </div>
+                                  <!-- Here working -->
+                                  <div class="col col-lg-6">
+                                        {% if  employee.religion %}
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span style="">Religion</span><div>{{  employee.religion }}</div>
+                                            </a>
+                                            {% endif %}
+
+                                            {% if employee.nationality %}
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Nationality</span><div>{{ employee.nationality }}</div></a>
+                                            {% endif %}
+
+                                            {% if employee.hometown %}
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span>HomeTown</span> <div>{{ employee.hometown}}</div></a>
+                                            {% endif %}
+
+
+                                            {% if employee.region %}
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Region</span> <div>{{ employee.region }}</div></a>
+                                            {% endif %}
+
+                                            {% if employee.residence %}
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Residence (current)</span> <div>{{ employee.residence }}</div></a>
+                                            {% endif %}
+
+                                            {% if employee.address %}
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Address (Residence)</span> <div>{{ employee.address }}</div></a>
+                                            {% endif %}
+
+                                            {% if employee.education %}
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Education (Highest)</span> <div>{{ employee.education }}</div></a>
+                                            {% endif %}
+
+                                            {% if employee.lastwork %}
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Last Place of Work</span> <div>{{ employee.lastwork }}</div></a>
+                                            {% endif %}
+
+                                            {% if employee.position %}
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Position (last place of work)</span> <div>{{ employee.position  }}</div></a>
+                                            {% endif %}
+
+                                            {% if employee.ssnitnumber %}
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span>SSNI Number</span> <div>{{ employee.ssnitnumber  }}</div></a>
+                                            {% endif %}
+
+                                            {% if employee.startdate %}
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Employement Date</span> <div>{{ employee.startdate  }}</div></a>
+                                            {% endif %}
+
+
+                                           <div>
+                                            <span>last update - {{employee.updated|naturaltime }}</span>
+                                          </div>
+                                        
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- /PERSONAL INFORMATION -->
+
+                        <!-- FAMILY INFORMATION -->
+                        <div class="panel panel-default">
+                          <div class="panel-heading" role="tab" id="headingTwo">
+                            <h4 class="panel-title">
+                              <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                FAMILY INFORMATIONS 
+                              </a>
+                            </h4>
+                          </div>
+                          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                            <div class="panel-body">
+                                <section class="container-fluid">
+
+                                   <div class="row">
+                                        
+                                        {% if family %}
+                                          
+
+                                          
+                                          <div class="list-group" id="list-tab" role="tablist">
+                                            <a class="list-group-item list-group-item-action" id="list-home-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Status</span> <div>{{ family.status }}</div>
+                                            </a>
+
+                                            {% if family.spouse %}
+                                            <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Spouse( Fullname )</span> <div> {{ family.spouse}} </div>
+                                            </a>
+                                            {% endif %}
+
+                                            {% if family.occupation %}
+                                            <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Spouse( Occupation )</span> <div> {{ family.occupation}} </div>
+                                            </a>
+                                            {% endif %}
+
+                                            {% if family.tel %}
+                                            <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Spouse (Phone Number)</span> <div>{{ family.tel}} </div>
+                                            </a>
+                                            {% endif %}
+
+                                            {% if family.children %}
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Number of Children</span> <div> {{ family.children }}
+                                            </div>
+                                            </a>
+                                            {% endif %}
+
+                                            <!-- recent added 29/03/19 -->
+                                            {% if family.nextofkin %}
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Next of Kin </span><div>{{ family.nextofkin }} </div>
+                                            </a>
+                                            {% endif %}
+                                         
+
+
+                                            {% if family.contact %}
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Next of Kin (Contact)</span> <div> {{ family.contact }}</div></a>
+                                            {% endif %}
+
+                                            {% if family.relationship %}
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Relationship with Next of Kin</span> <div> {{ family.relationship }} </div></a>
+                                            {% endif %}
+
+
+                                            {% if family.father %}
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Father </span><div>{{ family.father }}</div></a>
+                                            {% endif %}
+
+                                            {% if family.foccupation %}
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Occupation </span><div>{{ family.foccupation }}</div></a>
+                                            {% endif %}
+
+                                            {% if family.mother %}
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Mother</span><div>{{ family.mother }}</div></a>
+                                            {% endif %}
+
+                                            {% if family.moccupation %}
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Occupation</span> <div>{{ family.moccupation}}</div></a>
+                                            {% endif %}
+
+                                            {% if request.user.is_superuser %}
+                                            <span><a href="{% url 'dashboard:familyedit' family.id %}">Edit</a></span>
+                                            {% endif %}
+                                          
+                                          </div>
+
+                                           <div>
+                                            <span>last update - {{family.updated|naturaltime }}</span>
+                                          </div>
+
+                                        {% else %}
+
+                                        <h4>
+                                          {% if request.user.is_superuser %}No Information found,to add click <a href="{% url 'dashboard:familycreate' %}">here</a>
+                                          {% else%}
+                                          No Information can be found. see your human resource manager.
+                                          {% endif %}
+                                        </h4>
+
+                                        {% endif %}
+
+                                   </div>
+                                </section>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- /FAMILY INFORMATION -->
+
+
+                        <!-- EMERGENCY -->
+                        <div class="panel panel-default">
+                          <div class="panel-heading" role="tab" id="headingThree">
+                            <h4 class="panel-title">
+                              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                               EMERGENCY INFORMATION
+                              </a>
+                            </h4>
+                          </div>
+                          <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                            <div class="panel-body">
+                                <section class="container-fluid">
+
+                                   <div class="row">
+                                        
+                                        {% if emergency %}
+                                          <div class="list-group" id="list-tab" role="tablist">
+                                            <a class="list-group-item list-group-item-action" id="list-home-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Fullname</span> <div>{{ emergency.fullname }}</div></a>
+                                            <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Telephone</span> <div>{{ emergency.tel}}</div></a>
+                                            <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Residence </span><div> {{ emergency.location}}</div></a>
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Relationship</span> <div> {{ emergency.relationship }}</div></a>
+
+
+                                            {% if request.user.is_superuser %}
+                                            <span><a href="{% url 'dashboard:emergencyupdate' emergency.id %}">Edit</a></span>
+                                            {% endif %}
+                                          </div>
+
+                                          <div>
+                                            <span>last update - {{emergency.updated|naturaltime }}</span>
+                                          </div>
+
+                                        {% else %}
+                                       
+                                        <h4>
+                                          {% if request.user.is_superuser %}No Information found,to add click <a href="{% url 'dashboard:emergencycreate' %}">here</a>
+                                          {% else%}
+                                          No Information can be found. see your human resource manager.
+                                          {% endif %}
+                                        </h4>
+
+                                        {% endif %}
+
+
+                                   </div>
+                                </section>
+
+                            </div>
+                              
+                          </div>
+                        </div>
+                        <!-- /EMERGENCY -->
+
+
+                        <!-- BANK ACCOUNT -->
+                        <div class="panel panel-default">
+                          <div class="panel-heading" role="tab" id="headingFour">
+                            <h4 class="panel-title">
+                              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                 BANK ACCOUNT INFORMATION
+                              </a>
+                            </h4>
+                          </div>
+                          <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+                            <div class="panel-body">
+                              <section class="container-fluid">
+
+                                   <div class="row">
+                                        
+                                        {% if bank %}
+                                          <div class="list-group" id="list-tab" role="tablist">
+                                            <a class="list-group-item list-group-item-action" id="list-home-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Bank name</span> <div>{{ bank.name }}</div></a>
+                                            <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Account Number</span> <div> {{ bank.account }}</div></a>
+                                            <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Branch </span><div>{{ bank.branch }}</div></a>
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Salary (Initial)</span> <div>{{ bank.salary}}</div></a>
+
+                                            {% if request.user.is_superuser %}
+                                            <span><a href="{% url 'dashboard:accountedit' bank.id %}">Edit</a></span>
+                                            {% endif %}
+
+                                            <div>
+                                              <span>last update - {{bank.updated|naturaltime }}</span>
+                                            </div>
+
+
+                                          </div>
+                                        {% else %}
+
+                                        <h4>
+                                          {% if request.user.is_superuser %}No Information found,to add click
+                                          <a href="{% url 'dashboard:bankaccountcreate' %}">here</a>
+                                          {% else%}
+                                            No Information can be found. see your human resource manager.
+                                          {% endif %}
+                                        </h4>
+
+                                        {% endif %}
+
+                                   </div>
+                                </section>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- /BANK ACCOUNT -->
+
+                      </div><!-- /ACCORDION PARENT -->
+
+
+
+                		</section>
+                 	</section><!-- /Row -->
+
+            </section> <!-- /container --> 
+
+
+        </section><!-- /content -->
+ {% endblock %}
+
+<script type="text/javascript">
+{% block extrajs%}
+
+{% endblock %}
+</script>

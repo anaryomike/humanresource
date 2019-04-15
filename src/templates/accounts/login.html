@@ -1,0 +1,315 @@
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<link rel="icon" type="image/png" href="assets/img/favicon.ico">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+	<title> Humanly suite - Login </title>
+
+	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="viewport" content="width=device-width" />
+
+
+    <!-- Bootstrap core CSS     -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" />
+
+    <!--     Fonts and icons     -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="{% static 'css/forms_styles.css' %}" rel="stylesheet" />
+
+
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=Anton|Russo+One" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Luckiest+Guy" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Alice" rel="stylesheet">
+
+</head>
+
+<style type="text/css">
+    
+html,body{
+    overflow: hidden;
+    height: 100%;
+}
+
+
+.shadow{
+    -webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+}
+
+.wrapper-form-index-page{
+    padding: 4%;
+}
+
+
+/* ------ center form -------*/
+.parent-wrap{
+    display: table;
+    width: 100%;
+    height: 100%;
+    /*background-color: #f7f7f7;*/
+}
+
+.sub-parent-wrap{
+    display:table-cell;
+    vertical-align:middle;
+    padding:15px;
+}
+
+/* ----- center form ---------*/
+
+.btn-custom{
+    padding: 4px 16px !important;
+    background: transparent !important;
+    color: #505050 !important;
+    border: 2px solid #8282e6 !important;
+    transition: all 400ms ease;
+}
+
+.btn-custom:hover{
+   color: #565656 !important; 
+}
+
+.forgt-pass-wrp{
+    margin-top: 5px;
+}
+
+.forgt-pass-wrp a {
+    text-decoration: none;
+}
+
+label {
+    font-weight: 100;
+    font-size: 16px;
+}
+
+
+h3{
+    font-weight: 100 !important;
+    font-size: 25px;
+}
+
+.navbar{
+    margin-bottom: 0 !important;
+}
+
+  a{
+    font-variant: petite-caps;
+    font-weight: 100;
+    font-size: 16px;
+  }
+
+#override-start{
+    background:none !important;
+    top: 35% !important;
+    right:13px;
+    color:#000;
+    font-size: 24px;
+
+}
+
+.alert-error{
+    background:#fd7b7b;
+    text-align: center;
+    font-size: 17px;
+}
+
+.alert-success,.alert-warning{
+    font-size:16px;
+}
+
+  
+        a{
+                font-variant: petite-caps;
+                font-weight: 100;
+                font-size: 16px;
+        }
+
+
+        .navbar-brand{
+          font-variant: petite-caps;
+          font-family: 'Luckiest Guy', cursive;
+          font-weight: 600;
+          font-size: 3.1rem;
+          color: #e4a530;
+          text-shadow:1px 2px 1px rgba(0,0,0,0.2);
+
+        }
+
+
+        h2{
+          font-family: 'Alice', serif;
+          color: gold;
+          font-size: 4.9rem;
+
+
+        }
+      body{
+          position: relative;
+          /*background: #243177;*/
+
+        }
+
+        
+        a{
+                font-variant: petite-caps;
+                font-weight: 100;
+                font-size: 16px;
+        }
+
+
+        .navbar-brand{
+          font-variant: petite-caps;
+          font-family: 'Luckiest Guy', cursive;
+          font-weight: 600;
+          font-size: 3.1rem;
+          color: #e4a530;
+          text-shadow:1px 2px 1px rgba(0,0,0,0.2);
+
+        }
+
+
+        h2{
+          font-family: 'Alice', serif;
+          color: gold;
+          font-size: 4.9rem;
+
+
+        }
+
+
+
+        p{
+          font-variant: small-caps;
+          color: #cecece;
+
+        }
+
+        p span{
+          color: #a5a5a5;
+          font-weight: bold;
+        }
+
+        span.icon{
+          font-size: 15px;
+        }
+
+        .content{
+          position: relative;
+          height: 100vh;
+        }
+
+        .sub-title{
+        vertical-align: -webkit-baseline-middle;
+        font-size: 12px !important;
+        font-family: 'Luckiest Guy', cursive;
+        }
+
+
+        .back-link{
+          color: #fff;
+          font-size: 2.6rem;
+          font-weight: 900;
+          transition: all 400ms ease-in-out;
+        }
+
+        .back-link:hover{
+          color: #fff;
+          font-size: 2.8rem;
+          transition: all 400ms ease-in-out;
+        }
+
+        .container-centered-items{
+          position: absolute;
+          top: 50%;
+          left: 0;
+          right: 0;
+        }
+
+
+</style>
+
+<body>
+        <!-- Navigation -->
+                <nav class="navbar navbar-default">
+                      <div class="container-fluid">
+                        <!-- Brand and toggle get grouped for better mobile display -->
+                        <div class="navbar-header">
+                          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                            <span class="sr-only"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                          </button>
+
+                          <a class="navbar-brand" href="/">RABOTEC <span class="sub-title">HRM</span></a>
+                          
+                        </div>
+
+                        <!-- Collect the nav links, forms, and other content for toggling -->
+                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                          <ul class="nav navbar-nav">
+                            <li class=""><a href="http://www.rabotecgroup.com/" target="_blank">rabotec site <span class="sr-only">(current)</span></a></li>
+                            <li><a href="http://webmail.rabotecgroup.com/" target="_blank">rabotec mail</a></li>
+                          </ul>
+                        </div><!-- /.navbar-collapse -->
+                      </div><!-- /.container-fluid -->
+                </nav>
+            <!-- /Naivagtion -->
+<section class="parent-wrap">
+
+  <section class="sub-parent-wrap">
+
+    <section class="container">
+         <section class="row">
+            <section class="col col-sm-12">
+                  {% if  messages %}
+                                    {% for message in messages %}
+                                     <div {% if message.tags %} class="{{ message.tags}}"{% endif %}>
+                                         {{ message }}
+                                         <button type="button" class="close" id = "override-start"data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
+                                         </button>
+                                     </div>
+                      {% endfor %}
+                  {% endif %}
+            </section>
+         </section>
+
+          <section class="row">
+
+             <div class="col-lg-6 col-lg-offset-3">
+                <div class="wrapper-form-index-page shadow">
+                    <div class="row text-center">
+                        <h3 class="title-h3">User Login</h3>
+                    </div>
+
+                     <form action="" method="POST" id="login_form">
+                        {% csrf_token %}
+                        {{ form | crispy}}
+                        <button  type="submit" class="btn btn-primary btn-lg btn-block btn-custom">Login</button>
+                        <div class="forgt-pass-wrp">
+                            <!-- <a href="">Forgotten your password ?</a> -->
+                        </div>
+                     </form>
+
+                </div>
+             </div>
+        
+          </section>
+    </section><!-- container-->
+  </section>
+</section>
+
+</body>
+    <!--   Core JS Files   -->
+  <script src="{% static 'js/jquery.3.2.1.min.js' %}" type="text/javascript"></script>
+  <script src="{% static 'js/bootstrap.min.js' %}" type="text/javascript"></script>
+
+</html>

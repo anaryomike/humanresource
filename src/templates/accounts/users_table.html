@@ -1,0 +1,133 @@
+
+{% extends '_layout.html' %}
+
+{% block title %} {{ title }} {% endblock %}
+
+ {% block navheader %}
+ 	{% include 'includes/navheader_employee_app.html' %}
+ {% endblock %}
+
+ {% block stylesheet %}
+
+	.pe-7s-lock,.pe-7s-unlock{
+		font-size: 16px;
+	    font-weight: 600;
+	}
+
+	.pe-7s-unlock{
+		color:#22c322;
+	}
+
+	.pe-7s-lock{
+		color:#dc233c;
+	}
+
+	.table-shadow{
+		background: white;
+    	padding: 2%;
+    	-webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(	0,0,0,0.2);
+    	box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+	}
+
+	h4{
+	margin:2px 0 5px 0 !important;
+	}
+
+	.table-description{
+
+		<!-- GOOGLE FONTS-STYLE -->
+	}
+
+	.download-print-action{
+		padding-bottom: 12px;
+	}
+
+{% endblock %}
+        <!--CONTENTS-->
+ }
+ {% block content %}
+        <section class="content">
+
+            <section class="container-fluid">
+            	<!-- <section class="row">
+            		<section class="col col-lg-12 text-centered">
+            			
+            		</section>
+            	</section> -->
+                	<!-- TABLE -->
+                	<div class="table-shadow">
+                		<div class="text-center table-description">
+                			<h4 class="title-h3">Application Users</h4>
+                		</div>
+                		<div class="container-fluid">
+                			<div class="row">
+                			 	<div class="download-print-action">
+                			  		Download Excel | Pdf | Print
+                				</div>
+                			</div>
+                		</div>
+                		<table class="table">
+							  <thead>
+							    <tr>
+							      <th scope="col">Username</th>
+							      <th scope="col">Employee (fullname) </th>
+							      <th scope="col">Department</th>
+							      <th scope="col">Status</th>
+							      <th scope="col">Actions</th>
+							    </tr>
+							  </thead>
+
+							  <tbody>
+							  	{% for emp in employees %}
+							  	<tr>
+								      <td>{{emp.user.username}}</td>
+								      <td>{{ emp.get_full_name }}</td>
+								      <td>{{ emp.department }}</td>
+								      {% if emp.user.is_active %}
+								      <td>active</td>
+								      {% else %}
+								      <td>inactive</td>
+								      {% endif %}
+
+								      {%  if emp.user.is_active and emp.user.is_superuser %}
+								      <!-- Admin cannot block self -->
+								      <td style="font-style:italic;">(admin)</td>
+								      {% elif emp.user.is_active %}
+								      <td><a href="{% url 'accounts:userblock' emp.user.id %}" title="block user"><i class="pe-7s-unlock"></i></a></td>
+								      {% else %}
+								      <td><a href="{% url 'accounts:userunblock' emp.user.id %}" title="unblock user"><i class="pe-7s-lock"></i></a></td>
+								      {% endif %}
+
+
+								      
+								   
+							  </tr>
+							   {% endfor %}
+							  </tbody>
+						</table>
+					</div>
+                	<!-- /TABLE -->
+
+            </section> <!-- /container --> 
+
+
+        </section>
+ {% endblock %}
+
+<script type="text/javascript">
+{% block extrajs%}
+/*create-user-button - handler*/
+
+// $(document).ready(function(){
+
+// var createuser = $('.create-user-model');
+// createuser.on('click',function(){
+// alert("who clicked me ?")
+
+// });
+
+
+// });
+
+{% endblock %}
+</script>

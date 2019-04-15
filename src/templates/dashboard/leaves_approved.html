@@ -1,0 +1,240 @@
+
+{% extends '_layout.html' %}
+
+{% block title %} {{ title }} {% endblock %}
+
+ {% block navheader %}
+ 	{% include 'includes/navheader_employee_app.html' %}
+ {% endblock %}
+
+
+
+   {% block stylesheet %}
+	   	.fa-eye,.fa-pencil{
+	   	    margin-right: 5px;
+	   }
+
+	   .table-shadow{
+	   	background: white;
+    	padding: 2%;
+    	-webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(	0,0,0,0.2);
+    	box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+	}
+	
+
+	h4{
+	margin:2px 0 5px 0 !important;
+	}
+
+
+
+	.table-description{
+		<!-- STYLE WITH GOOGLE FONT -->
+	}
+
+	.download-print-action{
+		padding-bottom: 12px;
+	}
+
+
+    #override-start{
+	    background:none !important;
+	    top: 35% !important;
+	    right:13px;
+	    color:#000;
+	    font-size: 24px;
+
+	}
+
+	.alert-warning{
+	    background:#fd7b7b;
+	}
+
+	.alert-success {
+	    background-color: #82b72a;
+	}
+
+	.alert-success,.alert-warning{
+	    font-size:16px;
+	}
+
+	.sec-box{
+	 width:200px;
+     height:80px;
+     max-width:100%;
+     line-height:80px;
+     text-align:center;
+     position:relative;
+     
+     font-size:1.9rem;
+
+    -webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+    transition: all 400ms ease-in;
+
+    font-variant: petite-caps;
+}
+
+
+.sec-box a{
+ color:#fff;
+ text-decoration:none;
+	
+}
+
+
+ .employee-box{
+ 	background:#3f9a26;
+}
+
+
+ .leave-box{
+ 	background:#fff;
+
+}
+
+.leave-box a{
+	color:#3ea7c7 !important;
+}
+
+
+ .birthday-box{
+ 	background:#8664ad;
+}
+
+.deleted-box{
+	background:#d42828;
+}
+
+.company-box{
+	background:#868686;
+}
+
+.margin-bottom{
+	margin-bottom:1.4rem;
+}
+
+.count-object {
+    position: absolute;
+    top: 31%;
+    right: 12px;
+    font-size: 25px;
+    font-weight: 100;
+    font-variant: petite-caps;
+    color: #f5f5f5;
+    text-shadow:1px 1px rgba(8, 8, 8, 0.23);
+}
+
+.deprt{
+	color:#4195bd !important;
+}
+
+
+#stylebutton{
+	background: #60a0b3 !important;
+    color: #fff !important;
+    font-variant: petite-caps !important;
+    font-size: 14px !important;
+}
+
+.input-group-btn + input:focus{
+	outline:#60a0b3;
+}
+
+
+.total-leaves-count p{
+	font-size: 14px;
+    color: #9d9d9d;
+}
+
+
+{% endblock %}
+
+
+        <!--CONTENTS-->
+ {% block content %}
+        <section class="content">
+            <section class="container-fluid">
+            	   <section class="row">
+                        <section class="col col-sm-8 offset-sm-2">
+
+                            {% if  messages %}
+                                    {% for message in messages %}
+                                     <div {% if message.tags %} class="{{ message.tags}}"{% endif %}>
+                                         {{ message }}
+                                         <button type="button" class="close" id = "override-start"data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
+                                         </button>
+                                     </div>
+                                    {% endfor %}
+                            {% endif %}
+
+                        </section>
+                    </section>
+
+                	<!-- TABLE -->
+                	<div class="table-responsive table-shadow">
+                		<div class="text-center table-description">
+                			<h4 class="title-h3" style="color: #60a0b3 !important;
+    						text-shadow: 1px 0px rgba(0,0,0,0.11)">APPROVED LEAVES</h4>
+                		</div>
+                		<section class="total-leaves-count">
+                			{% if leave_list %}
+                			<p>Total approved leaves - <span>{{ leave_list.count }}</span></p>
+                			{% endif %}
+                		</section>
+                	
+                		<table class="table">
+							  <thead>
+							    <tr>
+							      <!-- <th scope="col">#</th> -->
+							      <th scope="col">User</th>
+							      <th scope="col">Type</th>
+							      <th scope="col">Day(s)</th>
+							      <th scope="col">Status</th>
+							      <th scope="col">Actions</th>
+							    </tr>
+							  </thead>
+							  <tbody>
+							  	{% for leave in leave_list %}
+							    <tr>
+
+							      <td>{{ leave.user }}</td>
+							      <td>{{ leave.leavetype}}</td>
+							      <td>{{ leave.leave_days }}</td>
+							      <td>{{ leave.status }}</td>
+
+							      <td> 
+							      	<a href="{% url 'dashboard:userleaveview' leave.id %}">
+							      	    <span>view</span>
+							      	</a>
+							      	
+							        <a href="{% url 'dashboard:userleaveunapprove' leave.id %}">
+							       	<span>unapprove</span>
+							        </a>
+
+							      </td>
+							    </tr>
+
+							    {% endfor %}
+
+							  </tbody>
+
+						</table>
+			
+					</div>
+                	<!-- /TABLE -->
+
+            </section> <!-- /container --> 
+
+
+        </section>
+ {% endblock %}
+
+<script type="text/javascript">
+{% block extrajs%}
+
+
+{% endblock %}
+</script>
+
+<!-- pe-7s-back   <= -->

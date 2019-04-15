@@ -1,0 +1,199 @@
+
+{% extends '_layout.html' %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% load crispy_forms_tags %}
+
+ {% block navheader %}
+    {% include 'includes/navheader_employee_app.html' %}
+ {% endblock %}
+
+
+
+  {% block stylesheet %}
+    .rounded-circle-image{
+    border-radius: 50% !important;
+    width:250px;
+    height:250px;
+  }
+
+  .form-wrapper{
+  background:#fff;
+  -webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+
+}
+
+
+.list-group {
+  margin-top: 10px;
+}
+
+span{
+  color: #6f6f6f;
+  font-weight: lighter;
+  font-size: 16px;
+}
+
+
+.list-group-item {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    margin-bottom: -1px;
+    background-color: #fff;
+    border: 1px solid transparent;
+    font-size:17px;
+}
+
+  #override-start{
+    background:none !important;
+    top: 35% !important;
+    right:13px;
+    color:#000;
+    font-size: 24px;
+
+    }
+
+    .alert-warning{
+        background:#fd7b7b;
+    }
+
+    .alert-success {
+        background-color: #82b72a;
+    }
+
+    .alert-success,.alert-warning{
+        font-size:16px;
+    }
+
+    .employee-name-title{
+    color: #3873b1;
+    font-weight: 600;
+    font-variant: petite-caps;
+    font-size: 3.1rem !important;
+  }
+
+  span,.list-group-item > div{
+  font-variant: petite-caps;
+}
+
+
+.panel-default>.panel-heading {
+    color: #fff !important;
+    background-color: #2d88a9 !important;
+}
+
+.panel-title a:hover{
+  color:#e6e4e4;
+}
+
+.panel-title a:active{
+  color:#e6e4e4;
+}
+
+.panel-title a:focus{
+  color:#e6e4e4;
+}
+
+
+
+  {% endblock %}
+
+
+  
+
+ {% block content %}
+        <section class="content">
+            <section class="container-fluid">
+           
+                <section class="form-wrapper">
+                    <section class="row">
+                        <section class="col col-lg-8 col-md-12  col-sm-12">
+
+                            {% if  messages %}
+                                    {% for message in messages %}
+                                     <div {% if message.tags %} class="{{ message.tags}}"{% endif %}>
+                                         {{ message }}
+                                         <button type="button" class="close" id = "override-start"data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
+                                         </button>
+                                     </div>
+                                    {% endfor %}
+                            {% endif %}
+
+                        </section>
+                    </section>
+
+                    <section class="row">
+                        <section class="col-lg-12 col-md-12 col-sm-12 text-center space-margin">
+                            <h3 class="title-h3">{{ employee.get_full_name }}</h3>
+                        </section>
+                    </section>
+
+                    <section class="row">
+                        <section class="col-lg-4 text-center">
+                          <img src="{{ employee.image.url}}"  class="img-fluid rounded-circle-image">
+                        </section>
+                        <section class="col-lg-8 col-md-12 col-sm-12">
+                                    <div class="list-group" id="list-tab" role="tablist">
+                                            <a class="list-group-item list-group-item-action" id="list-home-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Employee</span> <div>{{ employee.get_full_name }}</div>
+                                            </a>
+                                            <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Start Date</span> <div> Start Date {{ leave.startdate }}</div>
+                                            </a>
+                                            <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="" role="tab" aria-controls=""><span>End Date</span><div>{{ leave.enddate}}</div>
+                                            </a>
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Duration</span> <div>{{ leave.leave_days}}</div>
+                                            </a>
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Type</span> <div>{{ leave.leavetype}}</div>
+                                            </a>
+                                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Reason</span> <div>{{ leave.reason}}</div>
+                                            </a>
+                                             <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="" role="tab" aria-controls=""><span>Status</span> <div>{{ leave.status}}</div>
+                                             </a>
+
+                                       
+                                      </div>
+
+                        </section>
+                    </section>
+
+
+                             
+                                  <span style="font-size: 13px;padding-left: 1rem;" class="pull-left">Created {{ leave.created }}</span>
+                              
+
+              {% if request.user.is_superuser and request.user.is_staff %}
+
+                    <section class="row">
+                      <section class="col col-lg-4 col-sm-12 col-lg-offset-7 text-center">
+                        <div class="btn-group btn-group-justified">
+                          {%if leave.leave_approved %}
+                          <a href="{% url 'dashboard:userleaveunapprove' leave.id %}" class="btn btn-primary" name='unapprove'>UNAPPROVE
+                          </a>
+                          {% else %}
+                          <a href="{% url 'dashboard:userleaveapprove' leave.id %}" class="btn btn-primary" name='approve'>APPROVE
+                          </a>
+                          {% endif %}
+                          <a href="{% url 'dashboard:userleavecancel' leave.id %}" class="btn btn-info" name='cancel'>CANCEL</a>
+                          <a href="{% url 'dashboard:reject' leave.id %}" class="btn btn-warning" name='reject'>REJECT</a>  
+                        </div>
+                      </section>
+                    </section>
+
+              {% endif %}
+
+                </section>
+
+            </section> <!-- /container --> 
+        </section>
+ {% endblock %}
+
+<script type="text/javascript">
+{% block extrajs%}
+
+{% endblock %}
+</script>

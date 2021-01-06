@@ -9,7 +9,7 @@ Automat==0.7.0
 Babel==2.6.0
 beautifulsoup4==4.7.1
 cairocffi==1.0.2
-CairoSVG==2.3.0
+CairoSVG==2.5.1
 certifi==2018.11.29
 cffi==1.12.2
 chardet==3.0.4

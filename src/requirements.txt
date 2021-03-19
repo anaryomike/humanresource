@@ -43,7 +43,7 @@ django-taggit==0.23.0
 django-urlcrypt==0.1.6
 django-weasyprint==0.5.4
 django-widget-tweaks==1.4.3
-djangorestframework==3.9.1
+djangorestframework==3.11.2
 easy-thumbnails==2.6
 elasticsearch==6.3.1
 googledrivedownloader==0.3

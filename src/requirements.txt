@@ -88,7 +88,7 @@ sqlparse==0.2.4
 tinycss2==1.0.1
 tweepy==3.7.0
 txaio==18.8.1
-urllib3==1.24.1
+urllib3==1.26.5
 virtualenv==16.0.0
 virtualenv-clone==0.5.1
 WeasyPrint==45

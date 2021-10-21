@@ -6,7 +6,7 @@ async-timeout==2.0.1
 attrs==18.2.0
 autobahn==19.2.1
 Automat==0.7.0
-Babel==2.6.0
+Babel==2.9.1
 beautifulsoup4==4.7.1
 cairocffi==1.0.2
 CairoSVG==2.3.0

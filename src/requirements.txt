@@ -62,7 +62,7 @@ oauthlib==3.0.1
 pandas==0.24.1
 phonenumbers==8.10.5
 phonenumberslite==8.8.8
-Pillow==5.2.0
+Pillow==6.2.0
 pipenv==2018.11.26
 pycparser==2.19
 PyHamcrest==1.9.0
